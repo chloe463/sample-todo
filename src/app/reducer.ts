@@ -11,7 +11,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
         todo: { id: 0, task: '', finished: false },
         list: [
           ...state.list,
-          { id: state.list.length+1, task: payload.todo.task, finished: false }
+          { id: state.list.length + 1, task: payload.todo.task, finished: false }
         ]
       });
     case ACTION_TYPES.UPDATE_STATUS:
@@ -58,7 +58,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
     case ACTION_TYPES.REMOVE_TASK:
       return Object.assign({}, state, {
         list: state.list.filter(todo => {
-          return todo.id != payload.todo.id
+          return todo.id !== payload.todo.id;
         })
       });
   }
