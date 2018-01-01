@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { timer } from 'rxjs/observable/timer';
-// import { do } from 'rxjs/add/operator/do';
-import 'rxjs/add/operator/do';
 
 import { ACTION_TYPES } from './actions';
 import { StoreService } from './store.service';
