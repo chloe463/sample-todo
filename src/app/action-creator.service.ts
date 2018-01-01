@@ -3,6 +3,7 @@ import { timer } from 'rxjs/observable/timer';
 // import { do } from 'rxjs/add/operator/do';
 import 'rxjs/add/operator/do';
 
+import { ACTION_TYPES } from './actions';
 import { StoreService } from './store.service';
 
 @Injectable()
@@ -13,12 +14,12 @@ export class ActionCreatorService {
   addTodo(todo): void {
     if (todo.id) {
       this.store.dispatch({
-        type: 'EDIT_TODO',
+        type: ACTION_TYPES.EDIT_TODO,
         payload: { todo }
       });
     } else {
       this.store.dispatch({
-        type: 'ADD_TODO',
+        type: ACTION_TYPES.ADD_TODO,
         payload: { todo }
       });
     }
@@ -27,7 +28,7 @@ export class ActionCreatorService {
   updateTaskStatus(id: number): void {
     timer(500).subscribe(() => {
       this.store.dispatch({
-        type: 'UPDATE_STATUS',
+        type: ACTION_TYPES.UPDATE_STATUS,
         payload: { id }
       });
     });
@@ -36,7 +37,7 @@ export class ActionCreatorService {
   checkAll(): void {
     timer(100).subscribe(() => {
       this.store.dispatch({
-        type: 'CHECK_ALL'
+        type: ACTION_TYPES.CHECK_ALL
       });
     });
   }
@@ -44,7 +45,7 @@ export class ActionCreatorService {
   uncheckAll(): void {
     timer(100).subscribe(() => {
       this.store.dispatch({
-        type: 'UNCHECK_ALL'
+        type: ACTION_TYPES.UNCHECK_ALL
       });
     });
   }
@@ -52,21 +53,21 @@ export class ActionCreatorService {
   removeFinished(): void {
     timer(100).subscribe(() => {
       this.store.dispatch({
-        type: 'REMOVE_FINISHED'
+        type: ACTION_TYPES.REMOVE_FINISHED
       });
     });
   }
 
   returnToForm(todo): void {
     this.store.dispatch({
-      type: 'RETURN_TO_FORM',
+      type: ACTION_TYPES.RETURN_TO_FORM,
       payload: { todo }
     });
   }
 
   removeTask(todo): void {
     this.store.dispatch({
-      type: 'REMOVE_TASK',
+      type: ACTION_TYPES.REMOVE_TASK,
       payload: { todo }
     });
   }
