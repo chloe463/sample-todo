@@ -1,7 +1,7 @@
 import { Action } from 'romuald';
 
 import { Todo, AppState, initialState } from './state';
-import { ACTION_TYPES } from './actions';
+import * as  ACTION_TYPES from './actions';
 
 export const reducer = (state: AppState, action: Action): AppState => {
   const { type, payload } = action;
