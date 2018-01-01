@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { timer } from 'rxjs/Observable/timer';
+import { timer } from 'rxjs/observable/timer';
 // import { do } from 'rxjs/add/operator/do';
 import 'rxjs/add/operator/do';
 
