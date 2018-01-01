@@ -7,18 +7,20 @@ export const reducer = (state: AppState, action: Action): AppState => {
   const { type, payload } = action;
   switch (type) {
     case ACTION_TYPES.ADD_TODO:
+      payload.todo.editing = false;
       return Object.assign({}, state, {
-        todo: { id: 0, task: '', finished: false },
+        todo: new Todo(),
         list: [
           ...state.list,
-          { id: state.list.length+1, task: payload.todo.task, finished: false }
+          payload.todo
         ]
       });
     case ACTION_TYPES.UPDATE_STATUS:
       return Object.assign({}, state, {
         list: state.list.map(todo => {
           if (todo.id === payload.id) {
-            return Object.assign({}, todo, { finished: !todo.finished });
+            todo.finished = !todo.finished;
+            return todo;
           }
           return todo;
         })
@@ -26,13 +28,15 @@ export const reducer = (state: AppState, action: Action): AppState => {
     case ACTION_TYPES.CHECK_ALL:
       return Object.assign({}, state, {
         list: state.list.map(todo => {
-          return Object.assign({}, todo, { finished: true });
+          todo.finished = true;
+          return todo;
         })
       });
     case ACTION_TYPES.UNCHECK_ALL:
       return Object.assign({}, state, {
         list: state.list.map(todo => {
-          return Object.assign({}, todo, { finished: false });
+          todo.finished = false;
+          return todo;
         })
       });
     case ACTION_TYPES.REMOVE_FINISHED:
@@ -42,15 +46,16 @@ export const reducer = (state: AppState, action: Action): AppState => {
         })
       });
     case ACTION_TYPES.RETURN_TO_FORM:
+      payload.todo.editing = true;
       return Object.assign({}, state, {
         todo: payload.todo
       });
     case ACTION_TYPES.EDIT_TODO:
       return Object.assign({}, state, {
-        todo: { id: 0, task: '', finished: false },
+        todo: new Todo(),
         list: state.list.map(todo => {
           if (todo.id === payload.todo.id) {
-            return { id: todo.id, task: payload.todo.task, finished: false };
+            return payload.todo;
           }
           return todo;
         })
@@ -58,7 +63,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
     case ACTION_TYPES.REMOVE_TASK:
       return Object.assign({}, state, {
         list: state.list.filter(todo => {
-          return todo.id != payload.todo.id
+          return todo.id !== payload.todo.id;
         })
       });
   }
