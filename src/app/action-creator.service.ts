@@ -10,7 +10,7 @@ export class ActionCreatorService {
   constructor(private store: StoreService) {}
 
   addTodo(todo): void {
-    if (todo.id) {
+    if (todo.editing) {
       this.store.dispatch({
         type: ACTION_TYPES.EDIT_TODO,
         payload: { todo }
