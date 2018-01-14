@@ -9,7 +9,7 @@ export const reducer = (state: AppState, action: Action): AppState => {
     case ACTION_TYPES.ADD_TODO:
       payload.todo.editing = false;
       return Object.assign({}, state, {
-        todo: new Todo(),
+        input: new Todo(),
         list: [
           ...state.list,
           payload.todo
@@ -48,11 +48,11 @@ export const reducer = (state: AppState, action: Action): AppState => {
     case ACTION_TYPES.RETURN_TO_FORM:
       payload.todo.editing = true;
       return Object.assign({}, state, {
-        todo: payload.todo
+        input: payload.todo
       });
     case ACTION_TYPES.EDIT_TODO:
       return Object.assign({}, state, {
-        todo: new Todo(),
+        input: new Todo(),
         list: state.list.map(todo => {
           if (todo.id === payload.todo.id) {
             return payload.todo;

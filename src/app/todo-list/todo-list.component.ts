@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActionCreatorService } from '../action-creator.service';
+import { Todo, AppState } from '../state';
 import { StoreService } from '../store.service';
 
 @Component({
@@ -10,21 +11,21 @@ import { StoreService } from '../store.service';
 })
 export class TodoListComponent implements OnInit {
 
-  public state;
+  public list: Todo[];
 
   constructor(
     private actionCreator: ActionCreatorService,
     private store: StoreService
   ) {
-    this.store.subscribe(newState => {
-      this.state = JSON.parse(JSON.stringify(newState));
+    this.store.subscribe((newState: AppState) => {
+      this.list = JSON.parse(JSON.stringify(newState)).list;
     });
   }
 
   ngOnInit() {
   }
 
-  updateTaskStatus(todo): void {
+  updateTaskStatus(todo: Todo): void {
     this.actionCreator.updateTaskStatus(todo.id);
   }
 
@@ -40,11 +41,11 @@ export class TodoListComponent implements OnInit {
     this.actionCreator.removeFinished();
   }
 
-  returnToForm(todo): void {
+  returnToForm(todo: Todo): void {
     this.actionCreator.returnToForm(todo);
   }
 
-  removeTask(todo): void {
+  removeTask(todo: Todo): void {
     this.actionCreator.removeTask(todo);
   }
 

@@ -13,12 +13,12 @@ export class Todo {
 }
 
 export interface AppState {
-  todo: Todo;
+  input: Todo;
   list: Todo[];
 }
 
 export const initialState: AppState = {
-  todo: new Todo(),
+  input: new Todo(),
   list: [
     new Todo({ id: 1, task: 'Task1', finished: false }),
     new Todo({ id: 2, task: 'Task2', finished: true }),
