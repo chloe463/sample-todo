@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { timer } from 'rxjs/observable/timer';
 
 import * as  ACTION_TYPES from './actions';
+import { Todo } from './state';
 import { StoreService } from './store.service';
 
 @Injectable()
@@ -9,7 +10,7 @@ export class ActionCreatorService {
 
   constructor(private store: StoreService) {}
 
-  addTodo(todo): void {
+  addTodo(todo: Todo): void {
     if (todo.editing) {
       this.store.dispatch({
         type: ACTION_TYPES.EDIT_TODO,
@@ -23,7 +24,7 @@ export class ActionCreatorService {
     }
   }
 
-  updateTaskStatus(id: number): void {
+  updateTaskStatus(id: string): void {
     timer(500).subscribe(() => {
       this.store.dispatch({
         type: ACTION_TYPES.UPDATE_STATUS,
@@ -56,14 +57,14 @@ export class ActionCreatorService {
     });
   }
 
-  returnToForm(todo): void {
+  returnToForm(todo: Todo): void {
     this.store.dispatch({
       type: ACTION_TYPES.RETURN_TO_FORM,
       payload: { todo }
     });
   }
 
-  removeTask(todo): void {
+  removeTask(todo: Todo): void {
     this.store.dispatch({
       type: ACTION_TYPES.REMOVE_TASK,
       payload: { todo }

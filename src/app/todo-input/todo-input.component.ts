@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ActionCreatorService } from '../action-creator.service';
+import { AppState, Todo } from '../state';
 import { StoreService } from '../store.service';
 
 @Component({
@@ -10,14 +11,14 @@ import { StoreService } from '../store.service';
 })
 export class TodoInputComponent implements OnInit {
 
-  public todo;
+  public todo: Todo;
 
   constructor(
     private actionCreator: ActionCreatorService,
     private store: StoreService
   ) {
-    this.store.subscribe(newState => {
-      this.todo = newState.todo;
+    this.store.subscribe((newState: AppState) => {
+      this.todo = newState.input;
     });
   }
 
