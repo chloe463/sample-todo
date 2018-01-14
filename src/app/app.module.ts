@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
-import {
-  FrFormsModule
-} from 'francette';
+import { FrFormsModule } from 'francette/forms';
 
 import { AppComponent } from './app.component';
 import { TodoInputComponent } from './todo-input/todo-input.component';
