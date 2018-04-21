@@ -5,7 +5,6 @@ import { tap } from 'rxjs/operators';
 import { Armory } from '@chloe463/romuald';
 
 import { AppState, initialState } from './state';
-import { reducer } from './reducer';
 
 @Injectable()
 export class StoreService extends Armory<AppState> {
