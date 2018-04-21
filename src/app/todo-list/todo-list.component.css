@@ -17,6 +17,7 @@
   padding: 8px 0;
   border-bottom: 1px solid #EAEAEA;
   justify-content: space-between;
+  align-items: end;
 }
 
 .filter {
@@ -34,8 +35,14 @@
   color: #d04b63;
 }
 
+.icons {
+  display: inline-block;
+  height: 24px;
+}
+
 .icon {
   display: inline-block;
   width: 24px;
+  height: 24px;
   cursor: pointer;
 }

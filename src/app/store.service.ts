@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { tap } from 'rxjs/operators';
 
-import { Armory } from 'romuald';
+import { Armory } from '@chloe463/romuald';
 
 import { AppState, initialState } from './state';
 import { reducer } from './reducer';
@@ -9,7 +11,7 @@ import { reducer } from './reducer';
 export class StoreService extends Armory<AppState> {
 
   constructor() {
-    super(initialState, reducer);
+    super(initialState);
   }
 
 }

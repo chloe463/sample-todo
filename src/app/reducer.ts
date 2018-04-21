@@ -1,4 +1,4 @@
-import { Action } from 'romuald';
+import { Action } from '@chloe463/romuald';
 
 import { Todo, AppState, initialState } from './state';
 import * as  ACTION_TYPES from './actions';

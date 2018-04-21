@@ -17,8 +17,8 @@ export class TodoListComponent implements OnInit {
     private actionCreator: ActionCreatorService,
     private store: StoreService
   ) {
-    this.store.subscribe((newState: AppState) => {
-      this.list = JSON.parse(JSON.stringify(newState)).list;
+    this.store.subscribe(state => {
+      this.list = JSON.parse(JSON.stringify(state)).list;
     });
   }
 

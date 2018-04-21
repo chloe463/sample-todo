@@ -20,7 +20,7 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../node_modules/francette/bundles/francette.min.css"
+        "../node_modules/francette/styles/francette.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
