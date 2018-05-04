@@ -1,3 +1,4 @@
+import { TodoListComponent } from './todo-list/todo-list.component';
 export class Todo {
   public id: string;
   public task: string;

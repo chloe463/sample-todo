@@ -15,7 +15,7 @@ export class TodoInputComponent implements OnInit {
 
   constructor(
     private actionCreator: ActionCreatorService,
-    private store: StoreService
+    public store: StoreService
   ) {
     this.store.subscribe(state => {
       this.todo = state.input;
@@ -26,7 +26,7 @@ export class TodoInputComponent implements OnInit {
   }
 
   submit() {
-    this.actionCreator.addTodo(this.todo);
+    this.store.emitAsync(this.actionCreator.addTodo(this.todo));
   }
 
 }

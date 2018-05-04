@@ -23,30 +23,31 @@ export class TodoListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.emitAsync(this.actionCreator.fetchTodos());
   }
 
   updateTaskStatus(todo: Todo): void {
-    this.actionCreator.updateTaskStatus(todo.id);
+    this.store.emitAsync(this.actionCreator.updateTaskStatus(todo));
   }
 
   checkAll(): void {
-    this.actionCreator.checkAll();
+    this.store.emitAsync(this.actionCreator.checkAll());
   }
 
   uncheckAll(): void {
-    this.actionCreator.uncheckAll();
+    this.store.emitAsync(this.actionCreator.uncheckAll());
   }
 
   removeFinished(): void {
-    this.actionCreator.removeFinished();
+    this.store.emitAsync(this.actionCreator.removeFinished());
   }
 
   returnToForm(todo: Todo): void {
-    this.actionCreator.returnToForm(todo);
+    this.store.emitAsync(this.actionCreator.returnToForm(todo));
   }
 
   removeTask(todo: Todo): void {
-    this.actionCreator.removeTask(todo);
+    this.store.emitAsync(this.actionCreator.removeTask(todo));
   }
 
 }
