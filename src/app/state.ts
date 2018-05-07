@@ -15,14 +15,20 @@ export class Todo {
 
 export interface AppState {
   input: Todo;
-  list: Todo[];
+  list: {
+    todos: Todo[],
+    inProgress: boolean
+  }
 }
 
 export const initialState: AppState = {
   input: new Todo(),
-  list: [
-    new Todo({ id: 1, task: 'Task1', finished: false }),
-    new Todo({ id: 2, task: 'Task2', finished: true }),
-    new Todo({ id: 3, task: 'Task3', finished: false })
-  ]
+  list: {
+    todos: [
+      new Todo({ id: 1, task: 'Task1', finished: false }),
+      new Todo({ id: 2, task: 'Task2', finished: true }),
+      new Todo({ id: 3, task: 'Task3', finished: false })
+    ],
+    inProgress: false
+  }
 };

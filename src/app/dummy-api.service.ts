@@ -10,7 +10,7 @@ import { Todo, initialState } from './state';
 @Injectable()
 export class DummyApiService {
 
-  private todos: Todo[] = [...initialState.list];
+  private todos: Todo[] = [...initialState.list.todos];
 
   constructor(){}
 
@@ -27,11 +27,11 @@ export class DummyApiService {
     );
   }
 
-  putTodo(todo: Todo): Observable<Todo> {
+  putTodo(todo: Todo, value: boolean): Observable<Todo> {
     return timer(500).pipe(
       tap(_ => {
         this.todos = this.todos.map(v => {
-          if (v.id === todo.id) { v.finished = !v.finished; }
+          if (v.id === todo.id) { v.finished = value; }
           return v;
         });
       }),
