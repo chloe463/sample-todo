@@ -14,12 +14,4 @@ export class StoreService extends Armory<AppState> {
     super(initialState);
   }
 
-  emitAsync(action: Observable<any>) {
-    action = action.pipe(
-      tap(fn => this.emit(fn))
-    );
-    action.subscribe();
-    return action;
-  }
-
 }
