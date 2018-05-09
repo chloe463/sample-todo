@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { timer } from 'rxjs/observable/timer';
+import { Reducer } from '@chloe463/romuald';
+import { Observable, of, timer } from 'rxjs';
 import { catchError, filter, map, switchMap, switchMapTo, tap } from 'rxjs/operators';
 import { FrDialogService, FrToasterService } from 'francette';
 
@@ -32,7 +31,7 @@ export class ActionCreatorService {
     })
   }
 
-  fetchTodos(): Observable<Function> {
+  fetchTodos(): Observable<Reducer<AppState>> {
     this.toggleProgress(true);
     return this.api.fetchTodos().pipe(
       tap(_ => this.toggleProgress(false)),
@@ -50,42 +49,42 @@ export class ActionCreatorService {
     );
   }
 
-  addTodo(todo: Todo): Observable<object> {
+  addTodo(todo: Todo): Observable<Reducer<AppState>> {
     this.toggleProgress(true);
     return this.api.postTodo(todo).pipe(
       switchMap(_ => this.fetchTodos())
     );
   }
 
-  updateTaskStatus(todo: Todo, value: boolean): Observable<object> {
+  updateTaskStatus(todo: Todo, value: boolean): Observable<Reducer<AppState>> {
     this.toggleProgress(true);
     return this.api.putTodo(todo, value).pipe(
       switchMap(_ => this.fetchTodos())
     );
   }
 
-  checkAll(): Observable<object> {
+  checkAll(): Observable<Reducer<AppState>> {
     this.toggleProgress(true);
     return this.api.updateAllTodoStatus(true).pipe(
       switchMap(_ => this.fetchTodos())
     );
   }
 
-  uncheckAll(): Observable<object> {
+  uncheckAll(): Observable<Reducer<AppState>> {
     this.toggleProgress(true);
     return this.api.updateAllTodoStatus(false).pipe(
       switchMap(_ => this.fetchTodos())
     );
   }
 
-  removeFinished(): Observable<object> {
+  removeFinished(): Observable<Reducer<AppState>> {
     this.toggleProgress(true);
     return this.api.removeAll().pipe(
       switchMap(_ => this.fetchTodos())
     );
   }
 
-  returnToForm(todo: Todo): Observable<object> {
+  returnToForm(todo: Todo): Observable<Reducer<AppState>> {
     return this.dialog.open<string>(EditDialogComponent, { text: todo.task }).pipe(
       filter(v => v!== ''),
       tap(_ => this.toggleProgress(true)),
@@ -94,7 +93,7 @@ export class ActionCreatorService {
     );
   }
 
-  removeTask(todo: Todo): Observable<object> {
+  removeTask(todo: Todo): Observable<Reducer<AppState>> {
     this.toggleProgress(true);
     return this.api.remove(todo).pipe(
       switchMap(_ => this.fetchTodos())

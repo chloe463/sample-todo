@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map, pluck, tap } from 'rxjs/operators';
 
+import { Reducer } from '@chloe463/romuald';
 import { ActionCreatorService } from '../action-creator.service';
 import { Todo, AppState } from '../state';
 import { StoreService } from '../store.service';
