@@ -4,9 +4,17 @@
     <li (click)="uncheckAll()">UNCHECK ALL</li>
     <li (click)="removeFinished()">REMOVE FINISHED</li>
   </ul>
+  <div class="progress-bar-container">
+    <fr-progress-bar *ngIf="(inProgress$ | async)"></fr-progress-bar>
+  </div>
+  <!-- <pre>
+    {{todos$ | async | json}}
+  </pre> -->
   <ul class="tasks">
-    <li *ngFor="let todo of list" class="task">
-      <fr-checkbox [(ngModel)]="todo.finished" (ngModelChange)="updateTaskStatus(todo)">{{todo.task}}</fr-checkbox>
+    <!-- <li *ngFor="let todo of todos" class="task"> -->
+    <li *ngFor="let todo of (todos$ | async)" class="task">
+      <!-- <fr-checkbox [(ngModel)]="todo.finished" (ngModelChange)="updateTaskStatus(todo)">{{todo.task}}</fr-checkbox> -->
+      <fr-checkbox [(ngModel)]="todo.finished" (change)="updateTaskStatus($event, todo)">{{todo.task}}</fr-checkbox>
       <span class="icons">
         <!-- pencil -->
         <span class="icon" (click)="returnToForm(todo)">

@@ -10,7 +10,8 @@ import {
   FrDialogModule,
   FrFormsModule,
   FrToasterModule,
-  FrRippleModule
+  FrRippleModule,
+  FrProgressModule
 } from 'francette';
 
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { TodoInputComponent } from './todo-input/todo-input.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 
 import { ActionCreatorService } from './action-creator.service';
+import { DummyApiService } from './dummy-api.service';
 import { StoreService } from './store.service';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 
@@ -38,13 +40,15 @@ import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
     FrDialogModule,
     FrFormsModule,
     FrToasterModule,
-    FrRippleModule
+    FrRippleModule,
+    FrProgressModule
   ],
   entryComponents: [
     EditDialogComponent
   ],
   providers: [
     ActionCreatorService,
+    DummyApiService,
     StoreService
   ],
   bootstrap: [AppComponent]

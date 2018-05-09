@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { pluck } from 'rxjs/operators';
 
 import { ActionCreatorService } from '../action-creator.service';
 import { AppState, Todo } from '../state';
@@ -12,11 +14,13 @@ import { StoreService } from '../store.service';
 export class TodoInputComponent implements OnInit {
 
   public todo: Todo;
+  public state$;
 
   constructor(
     private actionCreator: ActionCreatorService,
-    private store: StoreService
+    public store: StoreService
   ) {
+    this.state$ = store.pipe();
     this.store.subscribe(state => {
       this.todo = state.input;
     });
@@ -26,7 +30,7 @@ export class TodoInputComponent implements OnInit {
   }
 
   submit() {
-    this.actionCreator.addTodo(this.todo);
+    this.store.emitAsync(this.actionCreator.addTodo(this.todo));
   }
 
 }

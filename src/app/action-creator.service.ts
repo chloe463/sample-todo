@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { timer } from 'rxjs/observable/timer';
-import { filter, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, switchMapTo, tap } from 'rxjs/operators';
 import { FrDialogService, FrToasterService } from 'francette';
 
-import { AppState, Todo } from './state';
+import { AppState, Todo, initialState } from './state';
 
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { StoreService } from './store.service';
+import { DummyApiService } from './dummy-api.service';
 
 @Injectable()
 export class ActionCreatorService {
@@ -14,85 +17,88 @@ export class ActionCreatorService {
   constructor(
     private dialog: FrDialogService,
     private toaster: FrToasterService,
-    private store: StoreService
+    private store: StoreService,
+    private api: DummyApiService
   ) {}
 
-  addTodo(todo: Todo): void {
+  toggleProgress(inProgress: boolean) {
     this.store.emit(state => {
       return Object.assign({}, state, {
-        input: new Todo(),
-        list: [...state.list, todo]
+        list: {
+          todos: state.list.todos,
+          inProgress
+        }
       });
-    });
+    })
   }
 
-  updateTaskStatus(id: string): void {
-    const fn = (state: AppState): AppState => {
-      return Object.assign({}, state, {
-        list: state.list.map(item => {
-          if (item.id === id) { item.finished = !item.finished; }
-          return item;
-        })
+  fetchTodos(): Observable<Function> {
+    this.toggleProgress(true);
+    return this.api.fetchTodos().pipe(
+      tap(_ => this.toggleProgress(false)),
+      map(todos => {
+        return (state: AppState) => {
+          return Object.assign({}, state, {
+            input: new Todo(),
+            list: {
+              todos,
+              inProgress: false
+            }
+          });
+        };
       })
-    };
-    this.store.emit(fn);
+    );
   }
 
-  checkAll(): void {
-    const fn = (state: AppState): AppState => {
-      return Object.assign({}, state, {
-        list: state.list.map(item => {
-          item.finished = true;
-          return item;
-        })
-      });
-    };
-    this.store.emit(fn);
+  addTodo(todo: Todo): Observable<object> {
+    this.toggleProgress(true);
+    return this.api.postTodo(todo).pipe(
+      switchMap(_ => this.fetchTodos())
+    );
   }
 
-  uncheckAll(): void {
-    const fn = (state: AppState): AppState => {
-      return Object.assign({}, state, {
-        list: state.list.map(item => {
-          item.finished = false;
-          return item;
-        })
-      });
-    };
-    this.store.emit(fn);
+  updateTaskStatus(todo: Todo, value: boolean): Observable<object> {
+    this.toggleProgress(true);
+    return this.api.putTodo(todo, value).pipe(
+      switchMap(_ => this.fetchTodos())
+    );
   }
 
-  removeFinished(): void {
-    const fn = (state: AppState): AppState => {
-      return Object.assign({}, state, {
-        list: state.list.filter(item => item.finished === false)
-      });
-    };
-    this.store.emit(fn);
+  checkAll(): Observable<object> {
+    this.toggleProgress(true);
+    return this.api.updateAllTodoStatus(true).pipe(
+      switchMap(_ => this.fetchTodos())
+    );
   }
 
-  returnToForm(todo: Todo): void {
-    this.dialog.open<string>(EditDialogComponent, { text: todo.task }).pipe(
-      filter(v => v !== '')
-    ).subscribe(v => {
-      const fn = (state: AppState): AppState => {
-        const newList = state.list.map(item => {
-          if (todo.id === item.id) { item.task = v; }
-          return item;
-        });
-        return Object.assign({}, state, { list: newList });
-      };
-      this.store.emit(fn);
-    });
+  uncheckAll(): Observable<object> {
+    this.toggleProgress(true);
+    return this.api.updateAllTodoStatus(false).pipe(
+      switchMap(_ => this.fetchTodos())
+    );
   }
 
-  removeTask(todo: Todo): void {
-    const fn = (state: AppState): AppState => {
-      return Object.assign({}, state, {
-        list: state.list.filter(item => item.id !== todo.id)
-      });
-    };
-    this.store.emit(fn);
+  removeFinished(): Observable<object> {
+    this.toggleProgress(true);
+    return this.api.removeAll().pipe(
+      switchMap(_ => this.fetchTodos())
+    );
+  }
+
+  returnToForm(todo: Todo): Observable<object> {
+    return this.dialog.open<string>(EditDialogComponent, { text: todo.task }).pipe(
+      filter(v => v!== ''),
+      tap(_ => this.toggleProgress(true)),
+      switchMap(v => this.api.updateTodo(todo, v)),
+      switchMap(_ => this.fetchTodos())
+    );
+  }
+
+  removeTask(todo: Todo): Observable<object> {
+    this.toggleProgress(true);
+    return this.api.remove(todo).pipe(
+      switchMap(_ => this.fetchTodos())
+    )
   }
 
 }
